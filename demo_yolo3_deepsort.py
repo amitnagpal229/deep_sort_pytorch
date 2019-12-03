@@ -58,7 +58,7 @@ class Detector(object):
                 bbox_xcycwh[:,3:] *= 1.2
 
                 cls_conf = cls_conf[mask]
-                outputs = self.deepsort.update(bbox_xcycwh, cls_conf, im)
+                outputs, _ = self.deepsort.update(bbox_xcycwh, cls_conf, im)
                 if len(outputs) > 0:
                     bbox_xyxy = outputs[:,:4]
                     identities = outputs[:,-1]

@@ -41,16 +41,18 @@ class DeepSort(object):
 
         # output bbox identities
         outputs = []
+        scores = []
         for track in self.tracker.tracks:
-            if not track.is_confirmed() or track.time_since_update > 1:
-                continue
+            #if not track.is_confirmed() or track.time_since_update > 1:
+            #    continue
             box = track.to_tlwh()
             x1,y1,x2,y2 = self._tlwh_to_xyxy(box)
             track_id = track.track_id
-            outputs.append(np.array([x1,y1,x2,y2,track_id], dtype=np.int))
+            outputs.append(np.array([x1,y1,x2,y2,track.state,track.time_since_update,track_id], dtype=np.int))
+            scores.append(track.detection_score)
         if len(outputs) > 0:
             outputs = np.stack(outputs,axis=0)
-        return outputs
+        return outputs, scores
 
 
     """
